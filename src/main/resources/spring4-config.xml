@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="concreteTool" class="net.imwork.zhanlong.spring4.ConcreteTool"/>
+    <!-- scope 这里的取值为singleton（表示只创建一个实例），它是scope的默认值；取值prototype（表示每使用一次都会创建新的实例） -->
+    <bean id="chinese4" class="net.imwork.zhanlong.spring4.Chinese" scope="prototype">
+        <property name="list">
+            <list>
+                <value>展龙</value>
+                <value>金立从</value>
+                <value>展梓千</value>
+                <ref bean="concreteTool"/>
+                <ref bean="concreteTool"/>
+                <bean class="net.imwork.zhanlong.spring4.ConcreteTool"/>
+            </list>
+        </property>
+
+        <property name="map">
+            <map>
+                <entry key="name" value="喜洋洋"/>
+                <entry key="age" value="25"/>
+                <entry key="address" value="江西九江"/>
+            </map>
+        </property>
+
+        <property name="set">
+            <set>
+                <value>刘备</value>
+                <value>张飞</value>
+                <value>关羽</value>
+                <value>赵云</value>
+                <ref bean="concreteTool"/>
+                <ref bean="concreteTool"/>
+                <bean class="net.imwork.zhanlong.spring4.ConcreteTool"/>
+            </set>
+        </property>
+
+        <property name="properties">
+            <props>
+                <prop key="学号">s2005001</prop>
+                <prop key="班级">造船1801</prop>
+                <prop key="姓名">张三</prop>
+            </props>
+        </property>
+    </bean>
+</beans>

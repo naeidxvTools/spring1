@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="personTarget6" class="net.imwork.zhanlong.spring6.PersonImpl">
+        <property name="name" value="张三"/>
+        <property name="address" value="九江"/>
+    </bean>
+
+    <bean id="beforeAdvice" class="net.imwork.zhanlong.spring6.MyMethodBeforeAdvice"/>
+    <bean id="afterAdvice" class="net.imwork.zhanlong.spring6.MyAfterReturningAdvice"/>
+    <bean id="aroundAdvice" class="net.imwork.zhanlong.spring6.MyAroundAdvice"/>
+
+<!--    p:target-ref="personTarget"-->
+    <!--  注意这里生成的对象person是ProxyFactoryBean创建的Person的代理对象；-->
+    <!--  如果想获得ProxyFactoryBean对象,则在getBean("&person");-->
+    <bean id="person6" class="org.springframework.aop.framework.ProxyFactoryBean"> <!-- p:target-ref="personTarget">-->
+        <property name="proxyInterfaces" value="net.imwork.zhanlong.spring6.Person"/>
+        <property name="target">
+            <bean class="net.imwork.zhanlong.spring6.PersonImpl">
+                <property name="name" value="张三"/>
+                <property name="address" value="九江"/>
+            </bean>
+        </property>
+        <!--  下面的target和上面的target效果一样  -->
+<!--        <property name="target" ref="personTarget6"/>-->
+        <property name="interceptorNames">
+            <list>
+                <value>beforeAdvice</value>
+                <value>afterAdvice</value>
+                <value>aroundAdvice</value>
+            </list>
+        </property>
+        <property name="proxyTargetClass" value="false"/>  <!-- value值为true，通过CGLIB创建子类代理；为false时，通过动态代理创建代理对象。-->
+    </bean>
+
+    <bean id="dogTarget" class="net.imwork.zhanlong.spring6.Dog"/>
+    <bean id="transactionManager6" class="net.imwork.zhanlong.spring6.TransactionManager6"/>
+
+    <bean id="dog" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionManager6</value>
+            </list>
+        </property>
+        <property name="target" ref="dogTarget"/>
+        <property name="proxyTargetClass" value="false"/> <!-- 注意：这里不管value是true和false，都是通过CGLIB创建子类代理，因为没有提供接口 -->
+    </bean>
+</beans>
